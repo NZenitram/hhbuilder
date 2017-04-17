@@ -1,4 +1,6 @@
 window.onload = function() {
+  var add = document.getElementsByClassName('add')
+  add[0].addEventListener('click', clearPeople)
   var ul = document.createElement("ul")
   ul.setAttribute('id', 'list')
   var div = document.getElementsByClassName('builder')[0]
@@ -13,12 +15,12 @@ var Person = function(age, relationship, smoker) {
   this.smoker = smoker;
 }
 
-// event listeners
-var add = document.getElementsByClassName('add')
-add[0].addEventListener('click', function(e){
+function clearPeople(e) {
+  var list = document.getElementById('list');
+  list.innerHTML = '';
   validateAge();
   e.preventDefault();
-});
+}
 
 // form validation script
 function validateAge() {
@@ -59,9 +61,12 @@ function appendBuilder() {
   if (household !== null) {
     var people = JSON.parse(localStorage.getItem('household'))
     for (var i = 0; i < people.length; i++) {
+
       var li = document.createElement("li")
 
-      li.innerHTMl = `<p>${people[i].age}</p>`
+      li.className = "person"
+
+      li.innerText = `${people[i].age}`
 
       ul.appendChild(li)
     }
