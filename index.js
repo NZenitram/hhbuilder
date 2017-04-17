@@ -3,6 +3,7 @@ window.onload = function() {
   add[0].addEventListener('click', clearPeople)
   var ul = document.createElement("ul")
   ul.setAttribute('id', 'list')
+  ul.setAttribute('style', 'list-style: none')
   var div = document.getElementsByClassName('builder')[0]
   div.appendChild(ul)
   appendBuilder()
@@ -64,9 +65,21 @@ function appendBuilder() {
 
       var li = document.createElement("li")
 
-      li.className = "person"
+      li.className = `person-${i}`
 
-      li.innerHTML = `<p class="age"> Age: ${people[i].age}</p> <p class="relationship"> Relationship: ${people[i].relationship} </p>  <p class="smoker"> Smoker: ${people[i].smoker} </p> <button type="button" class="delete"> Delete </button>`
+      li.innerHTML = `<table>
+                        <tr>
+                          <th>Age:</th>
+                          <th>Relationship:</th>
+                          <th>Smoker:</th>
+                        </tr>
+                        <tr>
+                          <td>${people[i].age}</td>
+                          <td>${people[i].relationship}</td>
+                          <td>${people[i].smoker}</td>
+                        </tr>
+                      </table>
+                      <button type="button" class="delete"> Delete </button>`
 
       ul.appendChild(li)
     }
@@ -78,13 +91,24 @@ function appendBuilder() {
 function removePerson() {
   var remove = document.getElementsByClassName('delete')
   for (var i = 0; i < remove.length; i++) {
-    remove[i].addEventListener('click', deletePerson)
+    remove[i].addEventListener('click', findPerson)
   }
 }
 
-function deletePerson() {
-  var person = this.parentElement
+function findPerson() {
+  var age = this.parentElement.children[0].children[0].children[1].children[0].innerText
+  var relationship = this.parentElement.children[0].children[0].children[1].children[1].innerText
+  var smoker = this.parentElement.children[0].children[0].children[1].children[2].innerText
   var household = JSON.parse(localStorage.getItem('household'))
-  
-  debugger
+  deletePerson(age, relationship, smoker, household)
+}
+
+function deletePerson(age, relationship, smoker, household) {
+  for (var i = 0; i < household.length; i++) {
+    if (household[i].age === age && household[i].relationship === relationship) {
+      household.splice(i, 1)
+    }
+  }
+  localStorage.setItem('household', JSON.stringify(household))
+  appendBuilder()
 }
