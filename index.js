@@ -31,7 +31,17 @@ function validateAge() {
   saveToLocalStorage(input, rel, smoker)
 }
 
+// save person to localStorage - household
 function saveToLocalStorage(input, rel, smoker) {
   var person = new Person(input, rel, smoker)
-  localStorage.setItem('family', JSON.stringify(person))
+  var houseHold = JSON.parse(localStorage.getItem('household')) || [];
+  houseHold.push(person)
+  localStorage.setItem('household', JSON.stringify(houseHold))
+  appendBuilder()
+}
+
+// append div with household
+function appendBuilder() {
+  var people = localStorage.getItem('household')
+  debugger
 }
