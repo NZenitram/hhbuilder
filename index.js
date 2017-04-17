@@ -66,7 +66,7 @@ function appendBuilder() {
 
       li.className = "person"
 
-      li.innerText = `${people[i].age}`
+      li.innerText = `Age: ${people[i].age} \n Relationship: ${people[i].relationship} \n Smoker: ${people[i].smoker}`
 
       ul.appendChild(li)
     }
