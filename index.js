@@ -56,33 +56,28 @@ function saveToLocalStorage(input, rel, smoker) {
 
 // append div with household
 function appendBuilder() {
-  var household = localStorage.getItem('household')
   var ul = document.getElementById('list')
+  var people = JSON.parse(localStorage.getItem('household'))
+  for (var i = 0; i < people.length; i++) {
+    var li = document.createElement("li")
 
-  if (household !== null) {
-    var people = JSON.parse(localStorage.getItem('household'))
-    for (var i = 0; i < people.length; i++) {
+    li.className = `person-${i}`
 
-      var li = document.createElement("li")
+    li.innerHTML = `<table>
+                      <tr>
+                        <th>Age:</th>
+                        <th>Relationship:</th>
+                        <th>Smoker:</th>
+                      </tr>
+                      <tr>
+                        <td>${people[i].age}</td>
+                        <td>${people[i].relationship}</td>
+                        <td>${people[i].smoker}</td>
+                      </tr>
+                    </table>
+                    <button type="button" class="delete"> Delete </button>`
 
-      li.className = `person-${i}`
-
-      li.innerHTML = `<table>
-                        <tr>
-                          <th>Age:</th>
-                          <th>Relationship:</th>
-                          <th>Smoker:</th>
-                        </tr>
-                        <tr>
-                          <td>${people[i].age}</td>
-                          <td>${people[i].relationship}</td>
-                          <td>${people[i].smoker}</td>
-                        </tr>
-                      </table>
-                      <button type="button" class="delete"> Delete </button>`
-
-      ul.appendChild(li)
-    }
+    ul.appendChild(li)
   }
   removePerson()
 }
@@ -91,11 +86,12 @@ function appendBuilder() {
 function removePerson() {
   var remove = document.getElementsByClassName('delete')
   for (var i = 0; i < remove.length; i++) {
-    remove[i].addEventListener('click', findPerson)
+    remove[i].addEventListener('click', getPersonAttributes)
   }
 }
 
-function findPerson() {
+// gather table attributes for persoin
+function getPersonAttributes() {
   var age = this.parentElement.children[0].children[0].children[1].children[0].innerText
   var relationship = this.parentElement.children[0].children[0].children[1].children[1].innerText
   var smoker = this.parentElement.children[0].children[0].children[1].children[2].innerText
@@ -103,6 +99,7 @@ function findPerson() {
   deletePerson(age, relationship, smoker, household)
 }
 
+// delete person from local storage
 function deletePerson(age, relationship, smoker, household) {
   for (var i = 0; i < household.length; i++) {
     if (household[i].age === age && household[i].relationship === relationship) {
@@ -110,5 +107,11 @@ function deletePerson(age, relationship, smoker, household) {
     }
   }
   localStorage.setItem('household', JSON.stringify(household))
-  appendBuilder()
+  clearList()
+}
+
+function clearList() {
+  var list = document.getElementById('list');
+  list.innerHTML = '';
+  appendBuilder();
 }
