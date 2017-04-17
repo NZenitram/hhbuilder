@@ -20,6 +20,7 @@ var Person = function(age, relationship, smoker) {
   this.smoker = smoker;
 }
 
+// clear list with form validation after add
 function clearPeople(e) {
   if (validateAge()) {
     var list = document.getElementById('list');
