@@ -1,11 +1,14 @@
 window.onload = function() {
-  var add = document.getElementsByClassName('add')
-  add[0].addEventListener('click', clearPeople)
+  var add = document.getElementsByClassName('add')[0]
   var ul = document.createElement("ul")
+  var p = document.createElement('p')
+  var div = document.getElementsByClassName('builder')[0]
+  var submit = document.getElementsByTagName('button')[1]
   ul.setAttribute('id', 'list')
   ul.setAttribute('style', 'list-style: none')
-  var div = document.getElementsByClassName('builder')[0]
   div.appendChild(ul)
+  add.addEventListener('click', clearPeople)
+  submit.addEventListener('click', submitHouseHold)
   appendBuilder()
 }
 
@@ -17,10 +20,12 @@ var Person = function(age, relationship, smoker) {
 }
 
 function clearPeople(e) {
-  var list = document.getElementById('list');
-  list.innerHTML = '';
-  validateAge();
-  e.preventDefault();
+  if (validateAge()) {
+    var list = document.getElementById('list');
+    list.innerHTML = '';
+    validateAge();
+    e.preventDefault();
+  }
 }
 
 // form validation script
@@ -94,13 +99,12 @@ function removePerson() {
 function getPersonAttributes() {
   var age = this.parentElement.children[0].children[0].children[1].children[0].innerText
   var relationship = this.parentElement.children[0].children[0].children[1].children[1].innerText
-  var smoker = this.parentElement.children[0].children[0].children[1].children[2].innerText
   var household = JSON.parse(localStorage.getItem('household'))
-  deletePerson(age, relationship, smoker, household)
+  deletePerson(age, relationship, household)
 }
 
 // delete person from local storage
-function deletePerson(age, relationship, smoker, household) {
+function deletePerson(age, relationship, household) {
   for (var i = 0; i < household.length; i++) {
     if (household[i].age === age && household[i].relationship === relationship) {
       household.splice(i, 1)
@@ -110,8 +114,16 @@ function deletePerson(age, relationship, smoker, household) {
   clearList()
 }
 
+// delete without form validation on click
 function clearList() {
   var list = document.getElementById('list');
   list.innerHTML = '';
   appendBuilder();
+}
+
+// Submit household
+function submitHouseHold() {
+  var debug = document.getElementsByClassName('debug')[0]
+  var household = String(localStorage.getItem('household'))
+  debug.innerHTML = `<p>XYS</p>`
 }
