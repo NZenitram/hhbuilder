@@ -1,3 +1,11 @@
+window.onload = function() {
+  var ul = document.createElement("ul")
+  ul.setAttribute('id', 'list')
+  var div = document.getElementsByClassName('builder')[0]
+  div.appendChild(ul)
+  appendBuilder()
+}
+
 // objects
 var Person = function(age, relationship, smoker) {
   this.age = age;
@@ -7,7 +15,10 @@ var Person = function(age, relationship, smoker) {
 
 // event listeners
 var add = document.getElementsByClassName('add')
-add[0].addEventListener('click', validateAge);
+add[0].addEventListener('click', function(e){
+  validateAge();
+  e.preventDefault();
+});
 
 // form validation script
 function validateAge() {
@@ -42,6 +53,17 @@ function saveToLocalStorage(input, rel, smoker) {
 
 // append div with household
 function appendBuilder() {
-  var people = localStorage.getItem('household')
-  debugger
+  var household = localStorage.getItem('household')
+  var ul = document.getElementById('list')
+
+  if (household !== null) {
+    var people = JSON.parse(localStorage.getItem('household'))
+    for (var i = 0; i < people.length; i++) {
+      var li = document.createElement("li")
+
+      li.innerHTMl = `<p>${people[i].age}</p>`
+
+      ul.appendChild(li)
+    }
+  }
 }
