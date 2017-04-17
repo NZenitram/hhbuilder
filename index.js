@@ -14,8 +14,8 @@ function validateAge() {
   var input = document.getElementsByName('age')[0].value;
   var rel = document.getElementsByName('rel')[0].value;
   var smoker = document.getElementsByName('smoker')[0].checked;
-
   var inputInt = parseInt(input)
+
   if (input === '') {
     alert("Age must be filled out");
     return false
@@ -32,5 +32,6 @@ function validateAge() {
 }
 
 function saveToLocalStorage(input, rel, smoker) {
-  debugger
+  var person = new Person(input, rel, smoker)
+  localStorage.setItem('family', JSON.stringify(person))
 }
