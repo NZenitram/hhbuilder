@@ -47,6 +47,14 @@ function validateAge() {
     return false
   }
   saveToLocalStorage(input, rel, smoker)
+  clearFields()
+}
+
+// clear form on submit
+function clearFields() {
+  document.getElementsByName('age')[0].value = ''
+  document.getElementsByName('rel')[0].value = ''
+  document.getElementsByName('smoker')[0].checked = false
 }
 
 // save person to localStorage - household
