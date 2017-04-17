@@ -1,4 +1,4 @@
-window.onload = function(e) {
+window.onload = function() {
   var add = document.getElementsByClassName('add')[0]
   var ul = document.createElement("ul")
   var p = document.createElement('p')
@@ -9,7 +9,6 @@ window.onload = function(e) {
   div.appendChild(ul)
   add.addEventListener('click', clearPeople)
   submit.addEventListener('click', submitHouseHold)
-  e.preventDefault()
   appendBuilder()
 }
 
@@ -22,12 +21,10 @@ var Person = function(age, relationship, smoker) {
 
 // clear list with form validation after add
 function clearPeople(e) {
-  if (validateAge()) {
-    var list = document.getElementById('list');
-    list.innerHTML = '';
-    validateAge();
-    e.preventDefault()
-  }
+  var list = document.getElementById('list');
+  list.innerHTML = '';
+  validateAge();
+  e.preventDefault()
 }
 
 // form validation script
@@ -41,6 +38,10 @@ function validateAge() {
     alert("Age must be filled out");
     return false
   }
+  if (isNaN(inputInt)) {
+    alert("Age must be entered as a number")
+    return false
+  }
   if (inputInt < 1) {
     alert("Age must be greater than zero");
     return false
@@ -50,6 +51,14 @@ function validateAge() {
     return false
   }
   saveToLocalStorage(input, rel, smoker)
+  clearFields()
+}
+
+// clear form on submit
+function clearFields() {
+  document.getElementsByName('age')[0].value = ''
+  document.getElementsByName('rel')[0].value = ''
+  document.getElementsByName('smoker')[0].checked = false
 }
 
 // save person to localStorage - household
@@ -65,26 +74,28 @@ function saveToLocalStorage(input, rel, smoker) {
 function appendBuilder() {
   var ul = document.getElementById('list')
   var people = JSON.parse(localStorage.getItem('household'))
-  for (var i = 0; i < people.length; i++) {
-    var li = document.createElement("li")
+  if (people !== null) {
+    for (var i = 0; i < people.length; i++) {
+      var li = document.createElement("li")
 
-    li.className = `person-${i}`
+      li.className = `person-${i}`
 
-    li.innerHTML = `<table>
-                      <tr>
-                        <th>Age:</th>
-                        <th>Relationship:</th>
-                        <th>Smoker:</th>
-                      </tr>
-                      <tr>
-                        <td>${people[i].age}</td>
-                        <td>${people[i].relationship}</td>
-                        <td>${people[i].smoker}</td>
-                      </tr>
-                    </table>
-                    <button type="button" class="delete"> Delete </button>`
+      li.innerHTML = `<table>
+                        <tr>
+                          <th>Age:</th>
+                          <th>Relationship:</th>
+                          <th>Smoker:</th>
+                        </tr>
+                        <tr>
+                          <td>${people[i].age}</td>
+                          <td>${people[i].relationship}</td>
+                          <td>${people[i].smoker}</td>
+                        </tr>
+                      </table>
+                      <button type="button" class="delete"> Delete </button>`
 
-    ul.appendChild(li)
+      ul.appendChild(li)
+    }
   }
   removePerson()
 }
