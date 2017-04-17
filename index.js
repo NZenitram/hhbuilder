@@ -38,6 +38,10 @@ function validateAge() {
     alert("Age must be filled out");
     return false
   }
+  if (isNaN(inputInt)) {
+    alert("Age must be entered as a number")
+    return false
+  }
   if (inputInt < 1) {
     alert("Age must be greater than zero");
     return false
