@@ -1,4 +1,4 @@
-window.onload = function() {
+window.onload = function(e) {
   var add = document.getElementsByClassName('add')[0]
   var ul = document.createElement("ul")
   var p = document.createElement('p')
@@ -9,6 +9,7 @@ window.onload = function() {
   div.appendChild(ul)
   add.addEventListener('click', clearPeople)
   submit.addEventListener('click', submitHouseHold)
+  e.preventDefault()
   appendBuilder()
 }
 
@@ -24,7 +25,7 @@ function clearPeople(e) {
     var list = document.getElementById('list');
     list.innerHTML = '';
     validateAge();
-    e.preventDefault();
+    e.preventDefault()
   }
 }
 
@@ -122,8 +123,10 @@ function clearList() {
 }
 
 // Submit household
-function submitHouseHold() {
+function submitHouseHold(e) {
   var debug = document.getElementsByClassName('debug')[0]
-  var household = String(localStorage.getItem('household'))
-  debug.innerHTML = `<p>XYS</p>`
+  var household = localStorage.getItem('household')
+  debug.style.display = 'inline';
+  debug.innerText= `${household}`
+  e.preventDefault()
 }
