@@ -66,9 +66,25 @@ function appendBuilder() {
 
       li.className = "person"
 
-      li.innerText = `Age: ${people[i].age} \n Relationship: ${people[i].relationship} \n Smoker: ${people[i].smoker}`
+      li.innerHTML = `<p class="age"> Age: ${people[i].age}</p> <p class="relationship"> Relationship: ${people[i].relationship} </p>  <p class="smoker"> Smoker: ${people[i].smoker} </p> <button type="button" class="delete"> Delete </button>`
 
       ul.appendChild(li)
     }
   }
+  removePerson()
+}
+
+// remove person from household
+function removePerson() {
+  var remove = document.getElementsByClassName('delete')
+  for (var i = 0; i < remove.length; i++) {
+    remove[i].addEventListener('click', deletePerson)
+  }
+}
+
+function deletePerson() {
+  var person = this.parentElement
+  var household = JSON.parse(localStorage.getItem('household'))
+  
+  debugger
 }
